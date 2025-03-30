@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > XmlParserServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.vangaurd.tradereporting.service.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: XmlParserServiceImpl (com.vangaurd.tradereporting.service.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">XmlParserServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.vangaurd.tradereporting.service.impl;
+&nbsp;
+&nbsp;import com.vangaurd.tradereporting.exception.XmlParseException;
+&nbsp;import com.vangaurd.tradereporting.model.Event;
+&nbsp;import com.vangaurd.tradereporting.service.IXmlParserService;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.w3c.dom.Document;
+&nbsp;import org.w3c.dom.Node;
+&nbsp;import org.w3c.dom.NodeList;
+&nbsp;
+&nbsp;import javax.xml.parsers.DocumentBuilder;
+&nbsp;import javax.xml.parsers.DocumentBuilderFactory;
+&nbsp;import javax.xml.xpath.XPath;
+&nbsp;import javax.xml.xpath.XPathConstants;
+&nbsp;import javax.xml.xpath.XPathExpression;
+&nbsp;import javax.xml.xpath.XPathFactory;
+&nbsp;import java.io.File;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Service
+<b class="nc">&nbsp;public class XmlParserServiceImpl implements IXmlParserService {</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Event&gt; parseXmlFile(String directoryPath) throws XmlParseException {
+<b class="nc">&nbsp;        List&lt;Event&gt; events = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        File directory = new File(directoryPath);</b>
+<b class="nc">&nbsp;        if (directory.isDirectory()) {</b>
+<b class="nc">&nbsp;            for (File file : directory.listFiles()) {</b>
+<b class="nc">&nbsp;                if (file.isFile() &amp;&amp; file.getName().endsWith(&quot;.xml&quot;)) {</b>
+&nbsp;                    try {
+<b class="nc">&nbsp;                        events.add(parseSingleXmlFile(file.getAbsolutePath()));</b>
+&nbsp;                    } catch (XmlParseException e) {
+<b class="nc">&nbsp;                        throw new XmlParseException(&quot;Error parsing file: &quot; + file.getName() + e);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new XmlParseException(&quot;Invalid directory path: &quot; + directoryPath);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return events;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Event parseSingleXmlFile(String filePath) throws XmlParseException {
+&nbsp;        try {
+&nbsp;//            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+&nbsp;//            DocumentBuilder builder = factory.newDocumentBuilder();
+&nbsp;//            Document document = builder.parse(new File(filePath));
+&nbsp;//
+&nbsp;//            XPath xPath = XPathFactory.newInstance().newXPath();
+&nbsp;//
+&nbsp;//            List&lt;Event&gt; events = new ArrayList&lt;&gt;();
+&nbsp;//            NodeList eventNodes = (NodeList) xPath.evaluate(&quot;//event&quot;, document, XPathConstants.NODESET);
+&nbsp;//
+&nbsp;//            for (int i = 0; i &lt; eventNodes.getLength(); i++) {
+&nbsp;//                Node eventNode = eventNodes.item(i);
+&nbsp;//                Event event = new Event();
+&nbsp;//                event.setBuyerParty((String) xPath.evaluate(&quot;buyerPartyReference/@href&quot;, eventNode, XPathConstants.STRING));
+&nbsp;//                event.setSellerParty((String) xPath.evaluate(&quot;sellerPartyReference/@href&quot;, eventNode, XPathConstants.STRING));
+&nbsp;//                event.setPremiumAmount(new BigDecimal((String) xPath.evaluate(&quot;paymentAmount/amount&quot;, eventNode, XPathConstants.STRING)));
+&nbsp;//                event.setPremiumCurrency((String) xPath.evaluate(&quot;paymentAmount/currency&quot;, eventNode, XPathConstants.STRING));
+&nbsp;//                events.add(event);
+&nbsp;//            }
+<b class="nc">&nbsp;            Event event = new Event();</b>
+<b class="nc">&nbsp;            File file = new File(filePath);</b>
+<b class="nc">&nbsp;            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</b>
+<b class="nc">&nbsp;            DocumentBuilder builder = factory.newDocumentBuilder();</b>
+<b class="nc">&nbsp;            Document doc = builder.parse(file);</b>
+<b class="nc">&nbsp;            XPathFactory xPathFactory = XPathFactory.newInstance();</b>
+<b class="nc">&nbsp;            XPath xpath = xPathFactory.newXPath();</b>
+&nbsp;
+<b class="nc">&nbsp;            XPathExpression buyerExpr = xpath.compile(&quot;//buyerPartyReference/@href&quot;);</b>
+<b class="nc">&nbsp;            XPathExpression sellerExpr = xpath.compile(&quot;//sellerPartyReference/@href&quot;);</b>
+<b class="nc">&nbsp;            XPathExpression amountExpr = xpath.compile(&quot;//paymentAmount/amount&quot;);</b>
+<b class="nc">&nbsp;            XPathExpression currencyExpr = xpath.compile(&quot;//paymentAmount/currency&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;            event.setBuyerParty((String) buyerExpr.evaluate(doc, XPathConstants.STRING));</b>
+<b class="nc">&nbsp;            event.setSellerParty((String) sellerExpr.evaluate(doc, XPathConstants.STRING));</b>
+<b class="nc">&nbsp;            event.setPremiumAmount(new BigDecimal((String) amountExpr.evaluate(doc, XPathConstants.STRING)));</b>
+<b class="nc">&nbsp;            event.setPremiumCurrency((String) currencyExpr.evaluate(doc, XPathConstants.STRING));</b>
+&nbsp;
+&nbsp;//            return events;
+<b class="nc">&nbsp;            return event;</b>
+&nbsp;        }
+&nbsp;        catch (Exception e) {
+<b class="nc">&nbsp;            throw new XmlParseException(&quot;Error parsing XML file: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-28 10:59</div>
+</div>
+</body>
+</html>
