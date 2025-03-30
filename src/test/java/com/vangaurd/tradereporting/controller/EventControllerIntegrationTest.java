@@ -14,6 +14,7 @@ import java.util.Collections;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
 
 @WebMvcTest(EventController.class)
 public class EventControllerIntegrationTest {
@@ -32,5 +33,14 @@ public class EventControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    void testGetFilteredEventsException() throws Exception {
+        mockMvc.perform(get("/api/events/filtered")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.errorCode", is("500")))
+                .andExpect(jsonPath("$.errorMessage", is("An unexpected error occurred")));
     }
 }
